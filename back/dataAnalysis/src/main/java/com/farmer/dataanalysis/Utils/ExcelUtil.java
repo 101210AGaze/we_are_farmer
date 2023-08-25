@@ -1,18 +1,19 @@
 package com.farmer.dataanalysis.Utils;
 
-import com.farmer.dataanalysis.bean.mList;
+import com.farmer.dataanalysis.bean.spiderBeans.mList;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
 public abstract class ExcelUtil {
 
 
-    public static void export(int total, List<mList> data) {
+    public static void export(File filePath , int total, List<mList> data) {
         Workbook wb = new HSSFWorkbook();
 
         Sheet sheet1 = wb.createSheet(TimeUtil.format(System.currentTimeMillis(),"yyyyMMdd"));
@@ -39,7 +40,7 @@ public abstract class ExcelUtil {
             row123.createCell(7).setCellValue(data.get(j - 1).getVarietyName());
         }
         try{
-            wb.write(new FileOutputStream(TimeUtil.format(System.currentTimeMillis(),"yyyyMMdd")+".xls"));
+            wb.write(new FileOutputStream(filePath));
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -1,10 +1,9 @@
-package com.farmer.dataanalysis.bean;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package com.farmer.dataanalysis.bean.spiderBeans;
+import lombok.*;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class mList {
@@ -16,6 +15,13 @@ public class mList {
     private String highestPrice;
     private String varietyId;
     private String varietyName;
+
+
+@Override
+    public String toString(){
+    return getMarketName()+","+getProvinceName()+","+getAreaName()+","+getMinimumPrice()+","+getMiddlePrice()
+            +","+getHighestPrice()+","+getVarietyId()+","+getVarietyName();
+}
 }
 
 

@@ -1,4 +1,4 @@
-package com.farmer.dataanalysis.bean;
+package com.farmer.dataanalysis.bean.spiderBeans;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

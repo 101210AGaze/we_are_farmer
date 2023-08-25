@@ -8,6 +8,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -18,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -97,11 +99,12 @@ public abstract class HttpUtil {
             UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(params,"UTF-8");//创建请求体
             httpPost.setEntity(urlEncodedFormEntity);//设置请求体
             httpPost.setHeader("User-Agent",userAgentList.get(new Random().nextInt(userAgentList.size())));//从userAgent列表中随机取
-            httpPost.addHeader("Accept", "*/*");
-            httpPost.addHeader("Accept-Encoding", "gzip, deflate, br");
-            httpPost.addHeader("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
+            httpPost.addHeader("Accept", "application/json, text/plain, */*");
+            httpPost.addHeader("Accept-Encoding", "gzip, deflate");
+            httpPost.addHeader("Accept-Language", "zh-CN,zh;q=0.9");
             httpPost.addHeader("Connection", "keep-alive");
-            httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            //httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
@@ -121,6 +124,49 @@ public abstract class HttpUtil {
             throw new RuntimeException(e);
         }
         return html;
+    }
+
+    public static String getHtmlByPost2(String url,String param,String value){
+        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm).build();
+        URIBuilder uriBuilder;
+        HttpPost httpPost;
+
+        try {
+            uriBuilder = new URIBuilder(url);
+            uriBuilder.addParameter(param,value);
+            httpPost = new HttpPost(uriBuilder.build());
+            httpPost.setConfig(config);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        httpPost.setHeader("User-Agent",userAgentList.get(new Random().nextInt(userAgentList.size())));
+        httpPost.setHeader("User-Agent",userAgentList.get(new Random().nextInt(userAgentList.size())));//从userAgent列表中随机取
+        httpPost.addHeader("Accept", "application/json, text/plain, */*");
+        httpPost.addHeader("Accept-Encoding", "gzip, deflate");
+        httpPost.addHeader("Accept-Language", "zh-CN,zh;q=0.9");
+        httpPost.addHeader("Connection", "keep-alive");
+        CloseableHttpResponse response = null;
+        try {
+            response = httpClient.execute(httpPost);
+            //5、获取响应内容
+            if(response.getStatusLine().getStatusCode()==200){
+                String html="";
+                if(response.getEntity()!=null){
+                    html = EntityUtils.toString(response.getEntity(),"UTF-8");
+                }
+                return html;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                response.close();
+                //httpClient.close();//注意，这里的HttpClient是从连接池中获取的，不需要关闭
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return null;
     }
 
     public static String sendJsonAndGetHtml(String url, JSONObject jsonObject,String encoding){

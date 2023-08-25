@@ -43,7 +43,7 @@ public class CodeGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/src/main/java");
-        gc.setAuthor("zhufu");
+        gc.setAuthor("hwj");
         gc.setOpen(false);
         // gc.setSwagger2(true); 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
@@ -60,7 +60,7 @@ public class CodeGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(scanner("模块名"));
-        pc.setParent("com.spidertest");
+        pc.setParent("com.farmer.dataanalysis");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
