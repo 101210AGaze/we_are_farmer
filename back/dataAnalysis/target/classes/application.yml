@@ -43,4 +43,4 @@ logging:
   config:
     classpath: logback.xml
 
-# logging.level.org.springframework.baoot.autoconfigure: ERROR
+  logging.level.org.springframework.baoot.autoconfigure: ERROR

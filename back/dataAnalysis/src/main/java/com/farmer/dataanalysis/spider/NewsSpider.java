@@ -45,6 +45,5 @@ public class NewsSpider {
         File filePath = new File("C:\\Users\\黄文敬\\Desktop\\爬虫\\爬取数据\\"
                 + TimeUtil.format(System.currentTimeMillis(),"yyyyMMdd")+"新闻.csv");
         CsvUtil.export(filePath,nb2);//将爬取到的数据封装到CSV中，默认没有第一行的数据说明
-
     }
 }
